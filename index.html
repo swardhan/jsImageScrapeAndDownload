@@ -23,12 +23,12 @@
 							var str = response.contents;
 							var image_link = str.substr(str.indexOf(`<span class="thumbnail-span" ><img  class='' src=`) + `<span class="thumbnail-span" ><img  class='' src=`.length, 55);
 							image_link = image_link.substring(1, image_link.length);
-							var link = document.createElement('a');
-							link.href = image_link;
-							link.download = 'Download.jpg';
-							document.body.appendChild(link);
-							link.click();
-							document.body.removeChild(link);
+							var temp_link = document.createElement('a');
+							temp_link.href = image_link;
+							temp_link.download = 'Download.jpg';
+							document.body.appendChild(temp_link);
+							temp_link.click();
+							document.body.removeChild(temp_link);
 						});
 				}else {
 					alert("Please Enter a Link.");
