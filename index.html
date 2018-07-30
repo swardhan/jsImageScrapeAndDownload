@@ -1,40 +1,144 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<script type="text/javascript" src="./jquery-2.1.3.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="animate.css">
+    <link rel="icon" href="img/logo.png" type="image" sizes="30x30">
+    <script type="text/javascript" src="jquery/jquery-2.1.3.min.js"></script>
+    <title>Roblox Asset Dowloader</title>
 </head>
+
 <body>
-	<form class="myForm">
-		<input type="text" name="link">
-		<input type="submit">
+
+    <nav class="navbar navbar-expand-lg navbar-light navbarmain">
+        <a class="navbar-brand" style="color:white;" href="#">Roblox Asset Downloader</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" style="color:white;" href="#">How to use?<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:white;" href="#">About us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:white;" href="#">Terms and Conditions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:white;" href="#">Privacy Policy</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+
+    <div class="mainarea">
+    <h1 class="bounceIn" style="margin-top: 1em">Welcome to Roblox Asset Downloader!!!</h1>
+    <p class="bounceIn" style="margin-top: 1em">Download Roblox Assets Online for free. All you have to do is paste the asset url in the box provided below. This is a totally free to use online Roblox Asset Downloader</p>
+    
+    <form class="myForm animated zoomInUp">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Roblox Asset URL</label>
+    <input type="text" name="link" class="form-control" id="exampleInputUrl" aria-describedby="Help" placeholder="Enter Roblox Asset Url...">
+    <small id="emailHelp" class="form-text">Example URL: - https://www.roblox.com/library/49406029/Little-black-dress-with-gold-belt</small>
+  </div>
+  
+  
+  <button type="submit" class="btn btn-success btn-lg submit-btn">Submit</button>
+  <a href="" download target="_blank" class="btn btn-success btn-lg dl-link">Download</a>
 	</form>
-</body>
-	<script>
+	<div class="message">
+			
+	</div>
+
+    </div>
+    
+
+<style>
+    
+    .mainarea{
+        margin: 0 auto;
+        width: 80%;
+        height: 400px;
+        display:flex;
+        justify-content: space-around;
+        flex-direction:column;
+        
+    }    
+    
+    .mainarea p{
+        font-size: 20px;
+    }
+    
+    body{
+        height: 100vh;
+        text-align:center; 
+    }
+    
+    
+    .navbarmain{
+        background-color: #07570e;
+        color: white;
+    }
+    
+    .dl-link{
+    	display: none;
+    }
+
+</style>
+    <script>
 			$('.myForm').on('submit', function(e){
 				e.preventDefault();
 				link = document.getElementsByName('link')[0].value;
-
-				if(link !== "None"){
+				if(link !== ""){
 					$.getJSON(
 						'http://allorigins.me/get?url=' + encodeURIComponent(link) + '&callback=?',
 						function(response) {
+
 							var str = response.contents;
-							var image_link = str.substr(str.indexOf(`<span class="thumbnail-span" ><img  class='' src=`) + `<span class="thumbnail-span" ><img  class='' src=`.length, 55);
-							image_link = image_link.substring(1, image_link.length);
-							var temp_link = document.createElement('a');
-							temp_link.href = image_link;
-							temp_link.download = 'Download.jpg';
-							document.body.appendChild(temp_link);
-							temp_link.click();
-							document.body.removeChild(temp_link);
+							var type = str.substr(str.indexOf(`<span class="field-content">`)+`<span class="field-content">`.length);
+							type = type.substr(0, type.indexOf(`</span>`))
+							console.log(type);
+							var msg_box = $('.message');
+							switch(type) {
+								case 'Decal':
+									msg_box.text("Add \".xml\" to the downloaded filename");
+									break;
+								case 'Image':
+									msg_box.text("Add \".png\" to the downloaded filename");
+									break;
+								case 'Model':
+									msg_box.text("Add \".rbxm\" to the downloaded filename");
+									break;
+								case 'Audio':
+									msg_box.text("Add \".mp3\" to the downloaded filename");
+									break;
+								case 'Plugin':
+									msg_box.text("Add \".rbxm\" to the downloaded filename");
+									break;
+							}
+
+						}).then(function(){
+							var dl_link = "https://assetgame.roblox.com/Asset/?id=" + link.split('/')[4]
+							var links = $('.dl-link');
+							links.attr('href', dl_link);
+							links.css({
+								'display': 'inline'
+							})
 						});
+					
 				}else {
 					alert("Please Enter a Link.");
 				}
-			})
-
+			});
 	</script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
 
 </html>
